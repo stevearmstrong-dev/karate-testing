@@ -26,9 +26,23 @@ jobs:
       - name: Run Karate Tests
         run: mvn test -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
 
+      - name: List directories
+        if: always()
+        run: |
+          echo "Current directory:"
+          ls -R
+          echo "Target directory:"
+          ls -R target || echo "Target directory not found"
+          echo "Karate reports directory:"
+          ls -R karate-reports || echo "Karate reports directory not found"
+
       - name: Upload Karate Reports
         if: always()
         uses: actions/upload-artifact@v3
         with:
           name: karate-reports
-          path: target/karate-reports
+          path: |
+            target/karate-reports
+            target/surefire-reports
+            karate-reports
+          if-no-files-found: warn
