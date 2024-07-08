@@ -52,7 +52,7 @@
                 <configuration>
                     <argLine>-Dfile.encoding=UTF-8</argLine>
                     <systemProperties>
-                        <karate.options>--format html</karate.options>
+                        <karate.options>--format html:target/karate-reports/karate-summary.html</karate.options>
                     </systemProperties>
                 </configuration>
             </plugin>

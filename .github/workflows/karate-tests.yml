@@ -24,7 +24,7 @@ jobs:
           restore-keys: ${{ runner.os }}-m2
 
       - name: Run Karate Tests
-        run: mvn test -B -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn
+        run: mvn test
 
       - name: List directories
         if: always()
@@ -33,8 +33,6 @@ jobs:
           ls -R
           echo "Target directory:"
           ls -R target || echo "Target directory not found"
-          echo "Karate reports directory:"
-          ls -R karate-reports || echo "Karate reports directory not found"
 
       - name: Upload Karate Reports
         if: always()
@@ -44,5 +42,4 @@ jobs:
           path: |
             target/karate-reports
             target/surefire-reports
-            karate-reports
           if-no-files-found: warn
