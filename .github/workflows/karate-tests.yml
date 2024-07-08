@@ -24,7 +24,7 @@ jobs:
           restore-keys: ${{ runner.os }}-m2
 
       - name: Run Karate Tests
-        run: mvn test
+        run: mvn test -e -X
 
       - name: List directories
         if: always()
@@ -33,6 +33,10 @@ jobs:
           ls -R
           echo "Target directory:"
           ls -R target || echo "Target directory not found"
+          echo "Karate reports directory:"
+          ls -R target/karate-reports || echo "Karate reports directory not found"
+          echo "Surefire reports directory:"
+          ls -R target/surefire-reports || echo "Surefire reports directory not found"
 
       - name: Upload Karate Reports
         if: always()
@@ -43,3 +47,10 @@ jobs:
             target/karate-reports
             target/surefire-reports
           if-no-files-found: warn
+
+      - name: Upload Maven logs
+        if: failure()
+        uses: actions/upload-artifact@v3
+        with:
+          name: maven-logs
+          path: ~/.m2/repository/.log/*.log
